@@ -5,21 +5,21 @@ from typing import Tuple
 import numpy as np
 
 
-def getCoordinationNumbers(
-    at: np.ndarray, coords: np.ndarray, cntype: str, threshold: float
-):
+def getCoordinationNumbers(at: np.ndarray, coords: np.ndarray, cntype: str,
+                           threshold: float):
     """A method to compute coordination numbers (cns).
 
-        CN values are calculated for a given structure and are returned as an
-        array. Choose functional type by "cn" defining standard (exp), covalent (cov),
-        or error (err)."""
+    CN values are calculated for a given structure and are returned as an
+    array. Choose functional type by "cn" defining standard (exp), covalent (cov),
+    or error (err)."""
+
+    from scipy import special
 
     from kallisto.data import covalent_radius as rcov
     from kallisto.data import pauling_en
-    from scipy import special
 
     nat = len(at)
-    cns = np.zeros(shape=(nat,), dtype=np.float64)
+    cns = np.zeros(shape=(nat, ), dtype=np.float64)
 
     if cntype == "exp":
         k1 = 16.0
@@ -65,7 +65,7 @@ def getCoordinationNumbers(
         # Fitted to match Wiberg bond orders of diatomic molecules
         k4 = 4.10451
         k5 = 19.08857
-        k6 = 2 * 11.28174 ** 2
+        k6 = 2 * 11.28174**2
 
         kn = 7.50
         for i in range(nat):
@@ -84,30 +84,30 @@ def getCoordinationNumbers(
                 rco = rcov[ia] + rcov[ja]
                 eni = pauling_en[ia]
                 enj = pauling_en[ja]
-                den = k4 * np.exp(-((np.abs(eni - enj) + k5) ** 2) / k6)
+                den = k4 * np.exp(-((np.abs(eni - enj) + k5)**2) / k6)
                 damp = den * 0.5 * (1 + special.erf(-kn * (r - rco) / rco))
                 cns[i] += damp
 
     return cns
 
 
-def getProximityShells(
-    at: np.ndarray, coords: np.ndarray, size: Tuple[int, int], threshold: float
-):
+def getProximityShells(at: np.ndarray, coords: np.ndarray,
+                       size: Tuple[int, int], threshold: float):
     """A method to compute atomic proximity shells (prox)."""
+
+    from scipy import special
 
     from kallisto.data import covalent_radius as rcov
     from kallisto.data import pauling_en
-    from scipy import special
 
     nat = len(at)
-    prox1 = np.zeros(shape=(nat,), dtype=np.float64)
-    prox2 = np.zeros(shape=(nat,), dtype=np.float64)
+    prox1 = np.zeros(shape=(nat, ), dtype=np.float64)
+    prox2 = np.zeros(shape=(nat, ), dtype=np.float64)
 
     # Fitted to match Wiberg bond orders of diatomic molecules
     k4 = 4.10451
     k5 = 19.08857
-    k6 = 2 * 11.28174 ** 2
+    k6 = 2 * 11.28174**2
 
     kn = 7.50
     threshold = 800.0
@@ -130,7 +130,7 @@ def getProximityShells(
             r = np.sqrt(rSquared)
             eni = pauling_en[ia]
             enj = pauling_en[ja]
-            den = k4 * np.exp(-((np.abs(eni - enj) + k5) ** 2) / k6)
+            den = k4 * np.exp(-((np.abs(eni - enj) + k5)**2) / k6)
 
             # smaller border
             rco = scale1 * (rcov[ia] + rcov[ja])
@@ -144,18 +144,18 @@ def getProximityShells(
     return prox2 - prox1
 
 
-def getAtomicPartialCharges(
-    at: np.ndarray, coords: np.ndarray, cns: np.ndarray, charge: int
-):
+def getAtomicPartialCharges(at: np.ndarray, coords: np.ndarray,
+                            cns: np.ndarray, charge: int):
     """A method to compute atomic electronegativity equilibration partial
-        charges (eeqs).
+    charges (eeqs).
 
-        EEQ values are calculated for a given structure and are returned as an
-        array."""
+    EEQ values are calculated for a given structure and are returned as an
+    array."""
 
-    from kallisto.data import eeq_alp, eeq_cnfak, eeq_en, eeq_gamm
     from numpy import linalg as LA
     from scipy import special
+
+    from kallisto.data import eeq_alp, eeq_cnfak, eeq_en, eeq_gamm
 
     # parameter
     sqrt2pi = np.sqrt(2.0 / np.pi)
@@ -176,7 +176,6 @@ def getAtomicPartialCharges(
     gam = eeq_gamm[z]
     kappa = eeq_cnfak[z]
     alpha = np.power(eeq_alp[z], 2)
-
     """Set up A matrix and X vector
 
             αi -> alpha(i), ENi -> xi(i), κi -> kappa(i), Jii -> gam(i)
@@ -200,7 +199,7 @@ def getAtomicPartialCharges(
             A[i][j] = A[j][i]
 
     # X vector
-    X = np.zeros(shape=(m,), dtype=np.float64)
+    X = np.zeros(shape=(m, ), dtype=np.float64)
     X[:nat] = -xi + kappa * np.sqrt(cns)
 
     # setup Lagragian constraints
@@ -215,17 +214,29 @@ def getAtomicPartialCharges(
     return qs[:-1]
 
 
-def getPolarizabilities(at: np.ndarray, covcn: np.ndarray, qs: np.ndarray, charge: int):
+def getPolarizabilities(at: np.ndarray, covcn: np.ndarray, qs: np.ndarray,
+                        charge: int):
     """A method to compute atomic-charge dependent dynamic atomic polarizabilities (alps).
 
     ALP values are calculated for a given structure and are returned as an
     array. For the charge dependency EEQ atomic partial charges are used
     in an empirical scaling function as used in the dftd4 program."""
 
-    from kallisto.data.alpha import refx, refh, hcount, ascale, refn
-    from kallisto.data.alpha import refcn, refsys, alphaiw, zeff
-    from kallisto.data.alpha import sscale, seciw, gam
-    from kallisto.utils.alpha import zeta, cngw
+    from kallisto.data.alpha import (
+        alphaiw,
+        ascale,
+        gam,
+        hcount,
+        refcn,
+        refh,
+        refn,
+        refsys,
+        refx,
+        seciw,
+        sscale,
+        zeff,
+    )
+    from kallisto.utils.alpha import cngw, zeta
 
     # parameter
     g_a = 3.0
@@ -249,11 +260,11 @@ def getPolarizabilities(at: np.ndarray, covcn: np.ndarray, qs: np.ndarray, charg
 
     # setup ncount and charge scale polarizabilities
     ncount = np.zeros(shape=(7, 86), dtype=np.int64)
-    alpha = np.zeros(shape=(23,), dtype=np.float64)
+    alpha = np.zeros(shape=(23, ), dtype=np.float64)
     alphar = np.zeros(shape=(23, 7, 86), dtype=np.float64)
 
     for i in range(nat):
-        cncount = np.zeros(shape=(18,), dtype=int)
+        cncount = np.zeros(shape=(18, ), dtype=int)
         cncount[0] = 1
         ia = at[i] - 1
         for j in range(refn[ia]):
@@ -261,22 +272,22 @@ def getPolarizabilities(at: np.ndarray, covcn: np.ndarray, qs: np.ndarray, charg
             refiz = zeff[refis]
             for jj in range(23):
                 alpha[jj] = (
-                    sscale[refis]
-                    * seciw[jj][refis]
-                    * zeta(g_a, g_c * gam[refis], refiz, refh[j][ia] + refiz)
-                )
+                    sscale[refis] * seciw[jj][refis]
+                    * zeta(g_a, g_c * gam[refis], refiz, refh[j][ia] + refiz))
             icn = np.rint(refcn[j][ia])
             cncount[int(icn)] += 1
             for jj in range(23):
                 alphar[jj][j][ia] = np.maximum(
-                    ascale[j][ia] * (alphaiw[jj][j][ia] - hcount[j][ia] * alpha[jj]), 0,
+                    ascale[j][ia]
+                    * (alphaiw[jj][j][ia] - hcount[j][ia] * alpha[jj]),
+                    0,
                 )
         for j in range(refn[ia]):
             icn = cncount[int(np.rint(refcn[j][ia]))]
             ncount[j][ia] = icn * (icn + 1) / 2
 
     # weigths
-    gw = np.zeros(shape=(ndim,), dtype=np.float64)
+    gw = np.zeros(shape=(ndim, ), dtype=np.float64)
     wf = 6.0
     for i in range(nat):
         ia = at[i] - 1
@@ -300,11 +311,12 @@ def getPolarizabilities(at: np.ndarray, covcn: np.ndarray, qs: np.ndarray, charg
         iz = zeff[ia]
         for ii in range(refn[ia]):
             k = itbl[ii][i]
-            zetvec[k] = gw[k] * zeta(g_a, g_c * gam[ia], refx[ii][ia] + iz, qs[i] + iz)
+            zetvec[k] = gw[k] * zeta(g_a, g_c * gam[ia], refx[ii][ia] + iz,
+                                     qs[i] + iz)
             for iii in range(23):
                 aw[iii][i] += zetvec[k] * alphar[iii][ii][ia]
 
-    atomicAiw = np.zeros(shape=(nat,), dtype=np.float64)
+    atomicAiw = np.zeros(shape=(nat, ), dtype=np.float64)
     for i in range(nat):
         atomicAiw[i] = aw[0][i]
 
@@ -374,18 +386,17 @@ def getCovalentBondingPartner(
         return covalentPartner
 
 
-def getVanDerWaalsRadii(
-    nat: int, at: np.ndarray, aw: np.ndarray, vdwtype: str, scale: float
-):
+def getVanDerWaalsRadii(nat: int, at: np.ndarray, aw: np.ndarray, vdwtype: str,
+                        scale: float):
     """A method to compute environment and charge dependent van der Waals radii (vdws).
 
-        VDW values are calculated from atomic polarizabilities for a given structure
-        and are returned as an array."""
+    VDW values are calculated from atomic polarizabilities for a given structure
+    and are returned as an array."""
 
     from kallisto.data import chemical_symbols
     from kallisto.data.vdw import rahm, truhlar
 
-    vdw = np.zeros(shape=(nat,), dtype=np.float64)
+    vdw = np.zeros(shape=(nat, ), dtype=np.float64)
 
     osev = 1.0 / 7.0
     # Empirical scaling and theta_a value from DOI:

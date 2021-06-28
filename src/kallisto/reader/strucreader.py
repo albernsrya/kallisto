@@ -2,9 +2,9 @@
 
 import click
 
-from kallisto.molecule import Molecule
 import kallisto.reader.turbomole as tm
 import kallisto.reader.xyz as xyz
+from kallisto.molecule import Molecule
 from kallisto.utils import errorbye
 
 

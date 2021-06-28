@@ -2,10 +2,10 @@
 
 import numpy as np
 
-secg = np.zeros(shape=(4,), dtype=np.float64)
-sscale = np.zeros(shape=(4,), dtype=np.float64)
-seccn = np.zeros(shape=(4,), dtype=np.float64)
-seccnD3 = np.zeros(shape=(4,), dtype=np.float64)
+secg = np.zeros(shape=(4, ), dtype=np.float64)
+sscale = np.zeros(shape=(4, ), dtype=np.float64)
+seccn = np.zeros(shape=(4, ), dtype=np.float64)
+seccnD3 = np.zeros(shape=(4, ), dtype=np.float64)
 seciw = np.zeros(shape=(23, 8), dtype=np.float64)
 
 refx = np.zeros(shape=(7, 86), dtype=np.float64)
@@ -7754,7 +7754,6 @@ alphaiw[19][0][85] = 1.090411
 alphaiw[20][0][85] = 0.767685
 alphaiw[21][0][85] = 0.387330
 alphaiw[22][0][85] = 0.230968
-
 
 # REF qX  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 2009
 refx[0][0] = 0.00000000000000

@@ -16,33 +16,31 @@ import numpy as np
 # 1999, pp. 477-481.
 
 # Define grid sizes
-gridSize = dict(
-    [
-        (0, 6),
-        (1, 14),
-        (2, 26),
-        (3, 38),
-        (4, 50),
-        (5, 74),
-        (6, 86),
-        (7, 110),
-        (8, 146),
-        (9, 170),
-        (10, 194),
-        (11, 230),
-        (12, 266),
-        (13, 302),
-        (14, 350),
-        (15, 434),
-        (16, 590),
-        (17, 770),
-        (18, 974),
-        (19, 1202),
-        (20, 1454),
-        (21, 1730),
-        (22, 2030),
-    ]
-)
+gridSize = dict([
+    (0, 6),
+    (1, 14),
+    (2, 26),
+    (3, 38),
+    (4, 50),
+    (5, 74),
+    (6, 86),
+    (7, 110),
+    (8, 146),
+    (9, 170),
+    (10, 194),
+    (11, 230),
+    (12, 266),
+    (13, 302),
+    (14, 350),
+    (15, 434),
+    (16, 590),
+    (17, 770),
+    (18, 974),
+    (19, 1202),
+    (20, 1454),
+    (21, 1730),
+    (22, 2030),
+])
 
 # keep octahedral symmetry
 z = 0.0
@@ -62,7 +60,7 @@ def getGridFromInt(n: int):
 
     size = gridSize[n]
     grid = np.zeros(shape=(size, 3), dtype=np.float64)
-    weights = np.zeros(shape=(size,), dtype=np.float64)
+    weights = np.zeros(shape=(size, ), dtype=np.float64)
 
     switcher = {
         0: lambda: ld0006(grid, weights, count),
@@ -125,7 +123,7 @@ def genOh1(count: Counter, coord: np.ndarray, weights: np.ndarray, v: float):
     coord[i + 3, :] = [z, -a, z]
     coord[i + 4, :] = [z, z, a]
     coord[i + 5, :] = [z, z, -a]
-    weights[i : i + 6] = v
+    weights[i:i + 6] = v
     count["points"] += 6
 
 
@@ -146,7 +144,7 @@ def genOh2(count: Counter, coord: np.ndarray, weights: np.ndarray, v: float):
     coord[i + 9, :] = [-a, a, z]
     coord[i + 10, :] = [a, -a, z]
     coord[i + 11, :] = [-a, -a, z]
-    weights[i : i + 12] = v
+    weights[i:i + 12] = v
     count["points"] += 12
 
 
@@ -163,11 +161,12 @@ def genOh3(count: Counter, coord: np.ndarray, weights: np.ndarray, v: float):
     coord[i + 5, :] = [-a, a, -a]
     coord[i + 6, :] = [a, -a, -a]
     coord[i + 7, :] = [-a, -a, -a]
-    weights[i : i + 8] = v
+    weights[i:i + 8] = v
     count["points"] += 8
 
 
-def genOh4(count: Counter, coord: np.ndarray, weights: np.ndarray, a: float, v: float):
+def genOh4(count: Counter, coord: np.ndarray, weights: np.ndarray, a: float,
+           v: float):
     """24 points from (a,a,b), b=sqrt(1-2 a^2)"""
 
     b = np.sqrt(1.0 - 2.0 * a * a)
@@ -196,11 +195,12 @@ def genOh4(count: Counter, coord: np.ndarray, weights: np.ndarray, a: float, v: 
     coord[i + 21, :] = [-b, a, -a]
     coord[i + 22, :] = [b, -a, -a]
     coord[i + 23, :] = [-b, -a, -a]
-    weights[i : i + 24] = v
+    weights[i:i + 24] = v
     count["points"] += 24
 
 
-def genOh5(count: Counter, coord: np.ndarray, weights: np.ndarray, a: float, v: float):
+def genOh5(count: Counter, coord: np.ndarray, weights: np.ndarray, a: float,
+           v: float):
     """24 points from (a,b,0), b=sqrt(1-a^2)."""
 
     i = count["points"]
@@ -229,13 +229,12 @@ def genOh5(count: Counter, coord: np.ndarray, weights: np.ndarray, a: float, v: 
     coord[i + 21, :] = [z, -b, a]
     coord[i + 22, :] = [z, b, -a]
     coord[i + 23, :] = [z, -b, -a]
-    weights[i : i + 24] = v
+    weights[i:i + 24] = v
     count["points"] += 24
 
 
-def genOh6(
-    count: Counter, coord: np.ndarray, weights: np.ndarray, a: float, b: float, v: float
-):
+def genOh6(count: Counter, coord: np.ndarray, weights: np.ndarray, a: float,
+           b: float, v: float):
     """48 points from (a,b,c), c=sqrt(1-a^2-b^2)"""
 
     i = count["points"]
@@ -288,7 +287,7 @@ def genOh6(
     coord[i + 45, :] = [-c, b, -a]
     coord[i + 46, :] = [c, -b, -a]
     coord[i + 47, :] = [-c, -b, -a]
-    weights[i : i + 48] = v
+    weights[i:i + 48] = v
     count["points"] += 48
 
 

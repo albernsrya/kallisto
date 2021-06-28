@@ -63,10 +63,8 @@ def cns(config, inp: str, out: click.File, cntype: str):
     availableCN = ("erf", "cov", "exp")
     if cntype not in availableCN:
         errorbye(
-            'CN definition "{}" is not implemented. Please use "erf", "cov", or "exp"'.format(
-                cntype
-            )
-        )
+            'CN definition "{}" is not implemented. Please use "erf", "cov", or "exp"'
+            .format(cntype))
 
     molecule = ksr.constructMolecule(geometry=inp, out=out)
     cns = molecule.get_cns(cntype)
@@ -101,7 +99,9 @@ def prox(config, inp: str, size: Tuple[int, int], out: click.File):
 
     # Stop if outer border is smaller than inner one
     if size[0] > size[1]:
-        errorbye("Outer border is smaller than inner one. Switch them and try again!")
+        errorbye(
+            "Outer border is smaller than inner one. Switch them and try again!"
+        )
 
     molecule = ksr.constructMolecule(geometry=inp, out=out)
     nat = molecule.get_number_of_atoms()
@@ -154,12 +154,8 @@ def bonds(config, inp: str, partner: int, constrain: bool, out: click.File):
         f.write("$constrain" + s)
         for i in range(nat):
             for partner in bonds[i]:
-                f.write(
-                    " distance: {}, {}, auto".format(
-                        i + 1 + config.shift, partner + 1 + config.shift
-                    )
-                    + s
-                )
+                f.write(" distance: {}, {}, auto".format(
+                    i + 1 + config.shift, partner + 1 + config.shift) + s)
         f.write("$end" + s)
         f.close()
 
@@ -312,17 +308,16 @@ def alp(config, inp: str, out: click.File, chrg: int, molecular: bool):
     help="Write to output file.",
 )
 @click.argument("inp", type=str, default="coord", required=True)
-def vdw(config, inp: str, out: click.File, chrg: int, vdwtype: str, angstrom: bool):
+def vdw(config, inp: str, out: click.File, chrg: int, vdwtype: str,
+        angstrom: bool):
     """Charge-dependent atomic van der Waals radii in Bohr."""
 
     # Available VDWs
     availableVDW = ("rahm", "truhlar")
     if vdwtype not in availableVDW:
         errorbye(
-            'VDW definition "{}" is not implemented. Please use "rahm" or "truhlar"'.format(
-                vdwtype
-            )
-        )
+            'VDW definition "{}" is not implemented. Please use "rahm" or "truhlar"'
+            .format(vdwtype))
 
     molecule = ksr.constructMolecule(geometry=inp, out=out)
     nat = molecule.get_number_of_atoms()
@@ -351,7 +346,10 @@ def vdw(config, inp: str, out: click.File, chrg: int, vdwtype: str, angstrom: bo
     required=False,
     help="Write to output file.",
 )
-@click.argument("inp", type=(str, str), default=("coord1", "coord2"), required=True)
+@click.argument("inp",
+                type=(str, str),
+                default=("coord1", "coord2"),
+                required=True)
 def rms(config, inp: Tuple[str, str], out: click.File):
     """Calculate the root mean squared deviation between two structures using quaternions.
     Based on a Fortran implementation by Chaok Seok, Evangelos
@@ -368,9 +366,7 @@ def rms(config, inp: Tuple[str, str], out: click.File):
     if nat1 != nat2:
         errorbye(
             "Error: number of atoms do not match in {} and in {}".format(
-                inp[0], inp[1]
-            ),
-        )
+                inp[0], inp[1]), )
 
     coord1 = mol1.get_positions()
     coord2 = mol2.get_positions()
@@ -416,14 +412,18 @@ def lig(config, inp: str, center: int, out: click.File):
 
     from kallisto.rmsd import recursiveGetSubstructures
 
-    silentPrinter(config.silent, "Write out substructures for {}".format(center), out)
+    silentPrinter(config.silent,
+                  "Write out substructures for {}".format(center), out)
 
-    substructures = recursiveGetSubstructures(nat, covbonds, center)  # type: ignore
+    substructures = recursiveGetSubstructures(nat, covbonds,
+                                              center)  # type: ignore
 
     k = 0
     for path in substructures:
         silentPrinter(
-            config.silent, "Substructure {}: {}".format(k, path), out,
+            config.silent,
+            "Substructure {}: {}".format(k, path),
+            out,
         )
         k += 1
 
@@ -469,7 +469,10 @@ def lig(config, inp: str, center: int, out: click.File):
     required=False,
     help="Write to output file.",
 )
-@click.argument("inp", type=(str, str), default=("coord1", "coord2"), required=True)
+@click.argument("inp",
+                type=(str, str),
+                default=("coord1", "coord2"),
+                required=True)
 def exs(
     config,
     inp: str,
@@ -557,8 +560,7 @@ def stm(config, inp: str, origin: int, partner: int, out: click.File):
     silentPrinter(
         config.silent,
         "Calculated for atom {0} (origin) and atom {1} (partner)".format(
-            origin, partner
-        ),
+            origin, partner),
         out,
     )
 
@@ -575,8 +577,7 @@ def stm(config, inp: str, origin: int, partner: int, out: click.File):
     silentPrinter(
         config.silent,
         "L, Bmin, Bmax / A: {:8.6f} {:8.6f} {:8.6f}".format(
-            L * Bohr, bmin * Bohr, bmax * Bohr
-        ),
+            L * Bohr, bmin * Bohr, bmax * Bohr),
         out,
     )
 

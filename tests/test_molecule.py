@@ -5,9 +5,9 @@ import os
 import numpy as np
 import pytest
 
+import kallisto.reader.strucreader as ksr
 from kallisto.atom import Atom
 from kallisto.molecule import Molecule
-import kallisto.reader.strucreader as ksr
 
 # define global lineseperator
 s = os.linesep
@@ -19,7 +19,8 @@ for i in range(3):
 
 
 # turbomole coord files can be read
-def test_a_user_can_compute_coordination_numbers_for_molecule(fluoromethane_coord):
+def test_a_user_can_compute_coordination_numbers_for_molecule(
+        fluoromethane_coord):
     fileObject = open(fluoromethane_coord, "r+")
     atoms = ksr.read(fileObject)
     molecule = Molecule(symbols=atoms)

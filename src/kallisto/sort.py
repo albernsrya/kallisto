@@ -1,12 +1,11 @@
 # src/kallisto/sort.py
 
-
 from collections import defaultdict
 
 import click
 
-from kallisto.data import chemical_symbols
 import kallisto.reader.strucreader as ksr
+from kallisto.data import chemical_symbols
 from kallisto.units import Bohr
 
 

@@ -24,7 +24,7 @@ def read(fileObject):
         if line.strip().startswith("$coord"):
             start = index
             break
-    for line in lines[start + 1 :]:
+    for line in lines[start + 1:]:
         # check if new section begins
         if line.startswith("$"):
             break

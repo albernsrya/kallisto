@@ -32,7 +32,8 @@ def test_cli_print_help(runner):
 
 # test cli part for coordination number
 def test_cli_cns_exp_silent(runner, pyridine_xyz):
-    result = runner.invoke(cli, ["--silent", "cns", "--cntype", "exp", pyridine_xyz])
+    result = runner.invoke(
+        cli, ["--silent", "cns", "--cntype", "exp", pyridine_xyz])
     assert result.exit_code == 0
 
 
@@ -176,25 +177,27 @@ def test_cli_vdw_angstrom(runner, pyridine_xyz):
 
 def test_cli_vdw_angstrom_truhlar(runner, pyridine_xyz):
     result = runner.invoke(
-        cli, ["vdw", "--angstrom", "--vdwtype", "truhlar", pyridine_xyz],
+        cli,
+        ["vdw", "--angstrom", "--vdwtype", "truhlar", pyridine_xyz],
     )
     assert result.exit_code == 0
 
 
 def test_cli_vdw_angstrom_rahm(runner, pyridine_xyz):
     result = runner.invoke(
-        cli, ["vdw", "--angstrom", "--vdwtype", "rahm", pyridine_xyz]
-    )
+        cli, ["vdw", "--angstrom", "--vdwtype", "rahm", pyridine_xyz])
     assert result.exit_code == 0
 
 
 def test_cli_vdw_angstrom_cation(runner, pyridine_xyz):
-    result = runner.invoke(cli, ["vdw", "--angstrom", "--chrg", "1", pyridine_xyz])
+    result = runner.invoke(cli,
+                           ["vdw", "--angstrom", "--chrg", "1", pyridine_xyz])
     assert result.exit_code == 0
 
 
 def test_cli_vdw_angstrom_anion(runner, pyridine_xyz):
-    result = runner.invoke(cli, ["vdw", "--angstrom", "--chrg", "-1", pyridine_xyz])
+    result = runner.invoke(cli,
+                           ["vdw", "--angstrom", "--chrg", "-1", pyridine_xyz])
     assert result.exit_code == 0
 
 
@@ -205,7 +208,8 @@ def test_cli_vdw_invalid(runner, pyridine_xyz):
 
 # test cli part for rms
 def test_cli_rms_silent(runner, pyridine_xyz):
-    result = runner.invoke(cli, ["--silent", "rms", pyridine_xyz, pyridine_xyz])
+    result = runner.invoke(cli,
+                           ["--silent", "rms", pyridine_xyz, pyridine_xyz])
     assert result.exit_code == 0
 
 
@@ -221,7 +225,8 @@ def test_cli_rms(runner, ch_radical_xyz):
 
 # test cli part for lig
 def test_cli_lig_silent(runner, ch_radical_xyz):
-    result = runner.invoke(cli, ["--silent", "lig", "--center", "1", ch_radical_xyz])
+    result = runner.invoke(
+        cli, ["--silent", "lig", "--center", "1", ch_radical_xyz])
     assert result.exit_code == 0
 
 
@@ -258,7 +263,8 @@ def test_cli_exs_silent(runner, pyridine_xyz):
 
 def test_cli_exs(runner, pyridine_xyz):
     result = runner.invoke(
-        cli, ["exs", "--center", "0", "--subnr", "2", pyridine_xyz, pyridine_xyz],
+        cli,
+        ["exs", "--center", "0", "--subnr", "2", pyridine_xyz, pyridine_xyz],
     )
     assert result.exit_code == 0
     newstructure = "newstructure.xyz"
@@ -304,14 +310,19 @@ def test_cli_exs_with_rotation(runner, pyridine_xyz):
 # test cli part for stm
 def test_cli_stm_silent(runner, iridiumcat_xyz):
     result = runner.invoke(
-        cli, ["--silent", "stm", "--origin", "18", "--partner", "23", iridiumcat_xyz],
+        cli,
+        [
+            "--silent", "stm", "--origin", "18", "--partner", "23",
+            iridiumcat_xyz
+        ],
     )
     assert result.exit_code == 0
 
 
 def test_cli_stm(runner, iridiumcat_xyz):
     result = runner.invoke(
-        cli, ["stm", "--origin", "18", "--partner", "23", iridiumcat_xyz],
+        cli,
+        ["stm", "--origin", "18", "--partner", "23", iridiumcat_xyz],
     )
     assert result.exit_code == 0
 

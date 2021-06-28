@@ -66,7 +66,7 @@ def getClassicalSterimol(mol: Molecule, origin: int, partner: int):
     r = 1
     slices = 360
     theta = np.linspace(0, 2 * np.pi, slices)
-    x = np.zeros(shape=(len(theta),), dtype=np.float64)
+    x = np.zeros(shape=(len(theta), ), dtype=np.float64)
     y = r * np.cos(theta)
     z = r * np.sin(theta)
     vectors = np.column_stack((x, y, z))

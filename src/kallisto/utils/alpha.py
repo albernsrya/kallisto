@@ -17,4 +17,4 @@ def zeta(a: float, c: float, qref: float, q: float) -> float:
 def cngw(wf: float, cn: float, cnref: float) -> float:
     """Gaussian weighting factor for reference systems."""
 
-    return np.exp(-wf * (cn - cnref) ** 2)
+    return np.exp(-wf * (cn - cnref)**2)

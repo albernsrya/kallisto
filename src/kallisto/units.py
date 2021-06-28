@@ -2,7 +2,7 @@
 
 from math import pi, sqrt
 
-from scipy.constants import c, e, G, h, k, m_e, m_p, m_u, mu_0, N_A
+from scipy.constants import N_A, G, c, e, h, k, m_e, m_p, m_u, mu_0
 
 version = "2018"
 
@@ -55,7 +55,7 @@ def createUnits(version):
 
     # Define all units
     # permittivity of vacuum
-    units["_eps0"] = 1 / units["_mu0"] / units["_c"] ** 2
+    units["_eps0"] = 1 / units["_mu0"] / units["_c"]**2
     # Planck constant / 2pi, J s
     units["_hbar"] = units["_hplanck"] / (2 * pi)
     # Angstrom
@@ -63,25 +63,13 @@ def createUnits(version):
     # Nanometer
     units["nm"] = 10.0
     # Bohr
-    units["Bohr"] = (
-        4e10
-        * pi
-        * units["_eps0"]
-        * units["_hbar"] ** 2
-        / units["_me"]
-        / units["_e"] ** 2
-    )
+    units["Bohr"] = (4e10 * pi * units["_eps0"] * units["_hbar"]**2
+                     / units["_me"] / units["_e"]**2)
     # Electronvolt
     units["eV"] = 1.0
     # Hartree
-    units["Hartree"] = (
-        units["_me"]
-        * units["_e"] ** 3
-        / 16
-        / pi ** 2
-        / units["_eps0"] ** 2
-        / units["_hbar"] ** 2
-    )
+    units["Hartree"] = (units["_me"] * units["_e"]**3 / 16 / pi**2
+                        / units["_eps0"]**2 / units["_hbar"]**2)
     # Define kJ/mol
     units["kJ"] = 1000.0 / units["_e"]
     # Define kcal/mol
@@ -106,25 +94,21 @@ def createUnits(version):
     # Define Debye
     units["Debye"] = 1.0 / 1e11 / units["_e"] / units["_c"]
     # fine structure constant
-    units["alpha"] = (
-        units["_e"] ** 2 / (4 * pi * units["_eps0"]) / units["_hbar"] / units["_c"]
-    )
+    units["alpha"] = (units["_e"]**2 / (4 * pi * units["_eps0"])
+                      / units["_hbar"] / units["_c"])
     # Inverse centimetre: cm^-1 energy unit
     units["invcm"] = 100 * units["_c"] * units["_hplanck"] / units["_e"]
     # atomic unit of time, s:
-    units["_aut"] = units["_hbar"] / (
-        units["alpha"] ** 2 * units["_me"] * units["_c"] ** 2
-    )
+    units["_aut"] = units["_hbar"] / (units["alpha"]**2 * units["_me"]
+                                      * units["_c"]**2)
     # atomic unit of velocity, m/s:
-    units["_auv"] = units["_e"] ** 2 / units["_hbar"] / (4 * pi * units["_eps0"])
+    units["_auv"] = units["_e"]**2 / units["_hbar"] / (4 * pi * units["_eps0"])
     # atomic unit of force, N:
-    units["_auf"] = (
-        units["alpha"] ** 3 * units["_me"] ** 2 * units["_c"] ** 3 / units["_hbar"]
-    )
+    units["_auf"] = (units["alpha"]**3 * units["_me"]**2 * units["_c"]**3
+                     / units["_hbar"])
     # atomic unit of pressure, Pa:
-    units["_aup"] = (
-        units["alpha"] ** 5 * units["_me"] ** 4 * units["_c"] ** 5 / units["_hbar"] ** 3
-    )
+    units["_aup"] = (units["alpha"]**5 * units["_me"]**4 * units["_c"]**5
+                     / units["_hbar"]**3)
     units["AUT"] = units["second"] * units["_aut"]
     # Define SI units
     # metre
@@ -188,7 +172,6 @@ def createUnits(version):
     Ry,
     Rydberg,
 ) = [0.0] * 43
-
 
 # Update the module scope:
 globals().update(createUnits(version))

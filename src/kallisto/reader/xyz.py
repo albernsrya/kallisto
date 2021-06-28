@@ -22,7 +22,7 @@ def read(fileObject):
     nat = int(lines[0])
 
     # loop over the nat lines
-    for line in lines[2 : nat + 2]:
+    for line in lines[2:nat + 2]:
         symbolRaw, x, y, z = line.split()[:4]
         symbolShort = symbolRaw.strip()
         atomSymbol = symbolShort[0].upper() + symbolShort[1:].lower()
