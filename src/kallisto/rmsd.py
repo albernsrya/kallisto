@@ -12,7 +12,8 @@ from kallisto.atom import Atom
 from kallisto.molecule import Molecule
 
 
-def rmsd(n: int, coord1: np.ndarray, coord2: np.ndarray) -> Tuple[float, np.ndarray]:
+def rmsd(n: int, coord1: np.ndarray,
+         coord2: np.ndarray) -> Tuple[float, np.ndarray]:
     """Calculate the least square rmsd in Angstrom for two
     coordinate sets coord1(n,3) and coord2(n,3) using a method based on
     quaternions."""
@@ -29,10 +30,10 @@ def rmsd(n: int, coord1: np.ndarray, coord2: np.ndarray) -> Tuple[float, np.ndar
     # calculate the barycenters, centroidal coordinates, and the norms
     x_norm = 0.0
     y_norm = 0.0
-    x_center = np.zeros(shape=(3,), dtype=np.float64)
-    y_center = np.zeros(shape=(3,), dtype=np.float64)
-    xi = np.zeros(shape=(n,), dtype=np.float64)
-    yi = np.zeros(shape=(n,), dtype=np.float64)
+    x_center = np.zeros(shape=(3, ), dtype=np.float64)
+    y_center = np.zeros(shape=(3, ), dtype=np.float64)
+    xi = np.zeros(shape=(n, ), dtype=np.float64)
+    yi = np.zeros(shape=(n, ), dtype=np.float64)
 
     for i in range(3):
         for j in range(n):
@@ -85,7 +86,8 @@ def rmsd(n: int, coord1: np.ndarray, coord2: np.ndarray) -> Tuple[float, np.ndar
     u = rotationMatrix(eigenvec)
 
     # root mean squared deviation
-    error = np.sqrt(np.maximum(0.0, ((x_norm + y_norm) - 2 * eigenval) / float(n)))
+    error = np.sqrt(
+        np.maximum(0.0, ((x_norm + y_norm) - 2 * eigenval) / float(n)))
 
     return error, u
 
@@ -112,7 +114,7 @@ def recursiveGetSubstructures(n: int, bonds, center: int):
     paths = []
 
     for i in range(len(bonds[center])):
-        path = np.zeros(shape=(n,), dtype=np.int32)
+        path = np.zeros(shape=(n, ), dtype=np.int32)
         path.fill(-1)
         partner = bonds[center][i]
         count = Counter()  # type: ignore
@@ -184,7 +186,7 @@ def exchangeSubstructure(
     mol = Molecule()
     for i in range(len(bonds[center])):
         if i == subnr:
-            path = np.zeros(shape=(n,), dtype=np.int32)
+            path = np.zeros(shape=(n, ), dtype=np.int32)
             # set all elements to -1
             path.fill(-1)
             partner = bonds[center][i]
@@ -199,7 +201,12 @@ def exchangeSubstructure(
             # get all bonding partner
             oldSubBonds = oldsub.get_bonds(partner="X")
             outxyz = matchSubstrates(
-                bonds, newsub, newSubBonds, oldsub, oldSubBonds, centralAtom,
+                bonds,
+                newsub,
+                newSubBonds,
+                oldsub,
+                oldSubBonds,
+                centralAtom,
             )
 
             # atoms from complex excluding old substrate
@@ -219,11 +226,15 @@ def exchangeSubstructure(
                 partner = outxyz[0, :]
                 outxyz2 = np.zeros(shape=outxyz.shape, dtype=np.float64)
                 # reference shift
-                refShift = getRodriguezRotation(partner, origin, partner, theta)
+                refShift = getRodriguezRotation(partner, origin, partner,
+                                                theta)
                 shift = outxyz[0, :] - refShift
                 for j in range(newnat):
                     outxyz2[j, :] = getRodriguezRotation(
-                        outxyz[j, :], origin, partner, theta,
+                        outxyz[j, :],
+                        origin,
+                        partner,
+                        theta,
                     )
                     outxyz2[j, :] += shift
 
@@ -250,9 +261,8 @@ def exchangeSubstructure(
     return mol
 
 
-def getRodriguezRotation(
-    point: np.ndarray, origin: np.ndarray, partner: np.ndarray, theta: float
-):
+def getRodriguezRotation(point: np.ndarray, origin: np.ndarray,
+                         partner: np.ndarray, theta: float):
     """Let 'unit' be a unit vector defining a rotation axis, and let 'point' be
     any vector to rotate about 'unit' by angle 'theta' (right hand rule).
     Using the dot and cross products, the vector 'point' can be decomposed into
@@ -288,9 +298,8 @@ def getSubstructureFromPath(refmol: Molecule, path: np.ndarray) -> Molecule:
     return Molecule(symbols=atoms)
 
 
-def writeTransitionMetalConstrains(
-    shift: int, n: int, bonds: np.ndarray, exclude: bool
-):
+def writeTransitionMetalConstrains(shift: int, n: int, bonds: np.ndarray,
+                                   exclude: bool):
     """Write out constrain file for GFN-xTB."""
 
     import os
@@ -305,9 +314,8 @@ def writeTransitionMetalConstrains(
     f.write("$constrain" + s)
     for i in range(n):
         for partner in bonds[i]:
-            f.write(
-                " distance: {}, {}, auto".format(i + 1 + shift, partner + 1 + shift) + s
-            )
+            f.write(" distance: {}, {}, auto".format(i + 1 + shift, partner
+                                                     + 1 + shift) + s)
     f.write("$end" + s)
     f.close()
 
@@ -338,7 +346,7 @@ def matchSubstrates(
     oldxyz = old.get_positions()
 
     # shift to first atom of old substrate
-    shift = np.zeros(shape=(3,), dtype=np.float64)
+    shift = np.zeros(shape=(3, ), dtype=np.float64)
     shift = oldxyz[0, :]
     oldShift = shift
     oldxyz2 = np.zeros(shape=(oldnat, 3), dtype=np.float64)
@@ -391,7 +399,8 @@ def matchSubstrates(
         indexNew = covNew - 1
         shiftOldSub[indexOld, :] = center - oldShift
         shiftNewSub[indexNew][:] = 0
-        distRef = distance.euclidean(shiftOldSub[0, :], shiftOldSub[indexOld, :])
+        distRef = distance.euclidean(shiftOldSub[0, :],
+                                     shiftOldSub[indexOld, :])
         getNewSubstrateCenter(indexNew, shiftNewSub, distRef)
 
     bdim = np.minimum(covOld, covNew)

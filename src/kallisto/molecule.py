@@ -29,7 +29,11 @@ class Molecule(object):
         Atomic charges."""
 
     def __init__(
-        self, symbols=None, positions=None, numbers=None, charges=None,
+        self,
+        symbols=None,
+        positions=None,
+        numbers=None,
+        charges=None,
     ):
 
         molecule = None
@@ -39,15 +43,10 @@ class Molecule(object):
             molecule = symbols
             symbols = None
         # Get data from a list or tuple of Atom objects
-        elif (
-            isinstance(symbols, (list, tuple))
-            and len(symbols) > 0
-            and isinstance(symbols[0], Atom)
-        ):
-            data = [
-                [symbol.get_raw(name) for symbol in symbols]
-                for name in ["position", "number", "charge"]
-            ]
+        elif (isinstance(symbols, (list, tuple)) and len(symbols) > 0
+              and isinstance(symbols[0], Atom)):
+            data = [[symbol.get_raw(name) for symbol in symbols]
+                    for name in ["position", "number", "charge"]]
             molecule = self.__class__(None, *data)
             symbols = None
 
@@ -75,7 +74,7 @@ class Molecule(object):
             else:
                 length = 0
             positions = np.zeros(shape=(length, 3))
-        self.new_array(name="positions", a=positions, dtype=float, shape=(3,))
+        self.new_array(name="positions", a=positions, dtype=float, shape=(3, ))
 
     def new_array(self, name, a, dtype=None, shape=None):
         """Add a new array."""
@@ -83,7 +82,7 @@ class Molecule(object):
         if dtype is not None:
             a = np.array(a, dtype, order="C")
             if len(a) == 0 and shape is not None:
-                a.shape = (-1,) + shape
+                a.shape = (-1, ) + shape
         else:
             if isinstance(a, np.ndarray):
                 if not a.flags["C_CONTIGUOUS"]:
@@ -94,15 +93,14 @@ class Molecule(object):
                 a = np.ascontiguousarray(a)
 
         if name in self.arrays:
-            raise RuntimeError('Array "{name}" already present'.format(name=name))
+            raise RuntimeError(
+                'Array "{name}" already present'.format(name=name))
 
         for b in self.arrays.values():
             if len(a) != len(b):
                 raise ValueError(
                     'Array "{name}" has wrong length: {a} != {b}.'.format(
-                        name=name, a=len(a), b=len(b)
-                    )
-                )
+                        name=name, a=len(a), b=len(b)))
             break
 
         self.arrays[name] = a
@@ -123,9 +121,7 @@ class Molecule(object):
                 if a.shape != b.shape:
                     raise ValueError(
                         'Array "{name}" has wrong shape {a} != {b}'.format(
-                            name=name, a=a.shape, b=b.shape
-                        )
-                    )
+                            name=name, a=a.shape, b=b.shape))
                 b[:] = a
 
     # Getter methods
@@ -167,9 +163,8 @@ class Molecule(object):
 
         at = self.get_atomic_numbers()
         coords = self.get_positions()
-        return getCovalentBondingPartner(
-            at, coords, partner, thresholdBond, thresholdCN
-        )
+        return getCovalentBondingPartner(at, coords, partner, thresholdBond,
+                                         thresholdCN)
 
     def get_cns(self, cntype: str, threshold=800.0):
         """Get coordination numbers (cns).
@@ -250,13 +245,10 @@ class Molecule(object):
         f.write("{:5}".format(nat) + s)
         f.write("Created with kallisto" + s)
         for i in range(nat):
-            f.write(
-                "{:3} {:9.4f} {:9.4f} {:9.4f}".format(
-                    chemical_symbols[at[i]],
-                    coord[i][0] * Bohr,
-                    coord[i][1] * Bohr,
-                    coord[i][2] * Bohr,
-                )
-                + s
-            )
+            f.write("{:3} {:9.4f} {:9.4f} {:9.4f}".format(
+                chemical_symbols[at[i]],
+                coord[i][0] * Bohr,
+                coord[i][1] * Bohr,
+                coord[i][2] * Bohr,
+            ) + s)
         f.close()

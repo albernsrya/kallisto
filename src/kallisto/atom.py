@@ -2,8 +2,7 @@
 
 import numpy as np
 
-from kallisto.data import atomic_numbers
-from kallisto.data import chemical_symbols
+from kallisto.data import atomic_numbers, chemical_symbols
 from kallisto.utils import basestring
 
 
@@ -51,7 +50,11 @@ class Atom(object):
 
     __slots__ = ("data", "molecule", "index")
 
-    def __init__(self, symbol="X", position=(0, 0, 0), charge=0, molecule=None):
+    def __init__(self,
+                 symbol="X",
+                 position=(0, 0, 0),
+                 charge=0,
+                 molecule=None):
 
         self.data = data = {}
 
