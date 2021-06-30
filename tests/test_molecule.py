@@ -5,9 +5,9 @@ import os
 import numpy as np
 import pytest
 
+import kallisto.reader.strucreader as ksr
 from kallisto.atom import Atom
 from kallisto.molecule import Molecule
-import kallisto.reader.strucreader as ksr
 
 # define global lineseperator
 s = os.linesep
