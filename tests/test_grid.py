@@ -7,6 +7,9 @@ def test_user_can_create_grid_sizes():
     for n in range(23):
         size = gridSize[n]
         grid, weights = getLebedevLaikovGrid(n)
-        assert len(weights) == size
-        assert len(grid[:, 1]) == size
-        assert len(grid[1, :]) == 3
+        if len(weights) != size:
+            raise AssertionError
+        if len(grid[:, 1]) != size:
+            raise AssertionError
+        if len(grid[1, :]) != 3:
+            raise AssertionError

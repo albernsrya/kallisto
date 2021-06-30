@@ -6,23 +6,30 @@ from tests.store import ch_radical, pyridine, toluene
 def test_bonds_ch_radical():
     mol = ch_radical()
     bonds = mol.get_bonds()
-    assert bonds[0] == [1]
-    assert bonds[1] == [0]
+    if bonds[0] != [1]:
+        raise AssertionError
+    if bonds[1] != [0]:
+        raise AssertionError
 
 
 def test_bonds_pyridine():
     mol = pyridine()
     bonds = mol.get_bonds()
-    assert bonds[0] == [1, 5, 6]
-    assert bonds[1] == [0, 2, 7]
-    assert bonds[4] == [3, 5, 10]
+    if bonds[0] != [1, 5, 6]:
+        raise AssertionError
+    if bonds[1] != [0, 2, 7]:
+        raise AssertionError
+    if bonds[4] != [3, 5, 10]:
+        raise AssertionError
 
 
 def test_bonds_toluene_partner():
     mol = toluene()
     partner = 1
     bonds = mol.get_bonds(partner)
-    assert bonds == [0, 2, 8]
+    if bonds != [0, 2, 8]:
+        raise AssertionError
     partner = 5
     bonds = mol.get_bonds(partner)
-    assert bonds == [0, 4, 6]
+    if bonds != [0, 4, 6]:
+        raise AssertionError

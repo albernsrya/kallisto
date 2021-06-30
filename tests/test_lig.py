@@ -10,12 +10,19 @@ def test_lig_neopentane():
     nat = mol.get_number_of_atoms()
     bonds = mol.get_bonds()
     substructures = recursiveGetSubstructures(nat, bonds, center)  # type: ignore
-    assert 1 in substructures[0]
-    assert 6 in substructures[0]
-    assert 8 in substructures[0]
-    assert 12 in substructures[0]
+    if 1 not in substructures[0]:
+        raise AssertionError
+    if 6 not in substructures[0]:
+        raise AssertionError
+    if 8 not in substructures[0]:
+        raise AssertionError
+    if 12 not in substructures[0]:
+        raise AssertionError
     center = 1
     substructures = recursiveGetSubstructures(nat, bonds, center)  # type: ignore
-    assert 6 in substructures[1]
-    assert 8 in substructures[2]
-    assert 12 in substructures[3]
+    if 6 not in substructures[1]:
+        raise AssertionError
+    if 8 not in substructures[2]:
+        raise AssertionError
+    if 12 not in substructures[3]:
+        raise AssertionError

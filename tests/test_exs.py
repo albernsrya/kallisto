@@ -41,24 +41,33 @@ def test_exs():
     )  # type: ignore
 
     at = mol.get_atomic_numbers()
-    assert at[85] == 6
+    if at[85] != 6:
+        raise AssertionError
     coords = mol.get_positions()
     # position of Carbon bonding to Iridium
-    assert np.isclose(coords[85, 0], 0.2001 / Bohr, rtol=1e-04)
-    assert np.isclose(coords[85, 1], -2.2076 / Bohr, rtol=1e-04)
-    assert np.isclose(coords[85, 2], 2.6787 / Bohr, rtol=1e-04)
+    if not np.isclose(coords[85, 0], 0.2001 / Bohr, rtol=1e-04):
+        raise AssertionError
+    if not np.isclose(coords[85, 1], -2.2076 / Bohr, rtol=1e-04):
+        raise AssertionError
+    if not np.isclose(coords[85, 2], 2.6787 / Bohr, rtol=1e-04):
+        raise AssertionError
     # position of Nitrogen
-    assert np.isclose(coords[90, 0], -1.0435 / Bohr, rtol=1e-04)
-    assert np.isclose(coords[90, 1], -2.4569 / Bohr, rtol=1e-04)
-    assert np.isclose(coords[90, 2], 3.1496 / Bohr, rtol=1e-04)
+    if not np.isclose(coords[90, 0], -1.0435 / Bohr, rtol=1e-04):
+        raise AssertionError
+    if not np.isclose(coords[90, 1], -2.4569 / Bohr, rtol=1e-04):
+        raise AssertionError
+    if not np.isclose(coords[90, 2], 3.1496 / Bohr, rtol=1e-04):
+        raise AssertionError
     constrain = "constrain.inp"
     gotFile = os.path.isfile(constrain)
-    assert gotFile is True
+    if gotFile is not True:
+        raise AssertionError
     if gotFile:
         os.remove(constrain)
     name += ".xyz"
     gotFile = os.path.isfile(name)
-    assert gotFile is True
+    if gotFile is not True:
+        raise AssertionError
     if gotFile:
         os.remove(name)
 
@@ -95,23 +104,32 @@ def test_exs_rotate_180_degrees():
     )  # type: ignore
 
     at = mol.get_atomic_numbers()
-    assert at[85] == 6
+    if at[85] != 6:
+        raise AssertionError
     coords = mol.get_positions()
     # position of Carbon bonding to Iridium
-    assert np.isclose(coords[85, 0], 0.2001 / Bohr, rtol=1e-04)
-    assert np.isclose(coords[85, 1], -2.2076 / Bohr, rtol=1e-04)
-    assert np.isclose(coords[85, 2], 2.6787 / Bohr, rtol=1e-04)
+    if not np.isclose(coords[85, 0], 0.2001 / Bohr, rtol=1e-04):
+        raise AssertionError
+    if not np.isclose(coords[85, 1], -2.2076 / Bohr, rtol=1e-04):
+        raise AssertionError
+    if not np.isclose(coords[85, 2], 2.6787 / Bohr, rtol=1e-04):
+        raise AssertionError
     # position of Nitrogen
-    assert np.isclose(coords[90, 0], 1.3335 / Bohr, rtol=1e-04)
-    assert np.isclose(coords[90, 1], -2.8374 / Bohr, rtol=1e-04)
-    assert np.isclose(coords[90, 2], 3.0650 / Bohr, rtol=1e-04)
+    if not np.isclose(coords[90, 0], 1.3335 / Bohr, rtol=1e-04):
+        raise AssertionError
+    if not np.isclose(coords[90, 1], -2.8374 / Bohr, rtol=1e-04):
+        raise AssertionError
+    if not np.isclose(coords[90, 2], 3.0650 / Bohr, rtol=1e-04):
+        raise AssertionError
     constrain = "constrain.inp"
     gotFile = os.path.isfile(constrain)
-    assert gotFile is True
+    if gotFile is not True:
+        raise AssertionError
     if gotFile:
         os.remove(constrain)
     name += ".xyz"
     gotFile = os.path.isfile(name)
-    assert gotFile is True
+    if gotFile is not True:
+        raise AssertionError
     if gotFile:
         os.remove(name)
