@@ -11,6 +11,9 @@ def test_stm():
     origin = 6
     partner = 5
     L, bmin, bmax = getClassicalSterimol(mol, origin, partner)
-    assert np.isclose(L, 12.714385)
-    assert np.isclose(bmin, 3.539068)
-    assert np.isclose(bmax, 6.640342)
+    if not np.isclose(L, 12.714385):
+        raise AssertionError
+    if not np.isclose(bmin, 3.539068):
+        raise AssertionError
+    if not np.isclose(bmax, 6.640342):
+        raise AssertionError

@@ -4,4 +4,5 @@ from kallisto import __version__
 
 
 def test_version():
-    assert __version__ == "1.0.7"
+    if __version__ != "1.0.7":
+        raise AssertionError
